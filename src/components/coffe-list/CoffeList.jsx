@@ -37,7 +37,7 @@ const CoffeList = (props) => {
         <div className="w-[90%] mx-auto mt-4 sm:w-2/3 flex flex-col gap-y-5 sm:mx-auto md:w-1/2">
             {
                 coffeList.map( coffe => 
-                    <CoffeItem key={coffe.id} coffe={coffe}/>
+                    <CoffeItem getCountForOrder={props.getCountForOrder} key={coffe.id} coffe={coffe}/>
                 )
             }
         </div>
