@@ -3,7 +3,7 @@ import Button from "../UI/Button";
 
 const CoffeItem = (props) => {
 
-    let [ count, setCount ] = useState(0);
+    let [ count, setCount ] = useState(1);
 
     const addCoffeToOrder = () => {
         props.getCountForOrder(createOrder()); 
@@ -12,7 +12,8 @@ const CoffeItem = (props) => {
     const createOrder = () => {
         const orderItem = {
             id: props.coffe.id,
-            count: count
+            count: count,
+            price: props.coffe.price
         }
         return orderItem;
     }
