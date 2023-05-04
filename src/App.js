@@ -10,18 +10,21 @@ function App() {
   let [orderPrice, setOrderPrice ] = useState(0);
 
   useEffect(() => {
-    calculateOrder();
+    calculateOrderSize();
   }, [order]);
+
+  useEffect(() => {
+    calculateOrderPrice();
+  }, [orderSize]);
 
   const getCountForOrderHandler = (newOrder) => {
     setOrder((prevOrder) => {
-      return [newOrder, ...prevOrder];
+      return [newOrder, ...(prevOrder.filter(coffe=> coffe.id !== newOrder.id))];
     });
   };
 
-  const calculateOrder = () => {
+  const calculateOrderSize = () => {
     let calculatedSize = 0;
-    let calculatedPrice = 0;
     for (let coffeItem of order) {
       calculatedSize += coffeItem.count;
     }
@@ -29,14 +32,22 @@ function App() {
     console.log(order);
   };
 
+  const calculateOrderPrice = () => {
+    let calculatedPrice = 0;
+    for (let coffeItem of order) {
+      calculatedPrice += coffeItem.count * coffeItem.price;
+    }
+    setOrderPrice(calculatedPrice);
+  }
+
+
+
   return (
 
     <div >
-
-      <NavBar orderSize={orderSize} />
-      {/* <HeroSection/> */}
+      <NavBar orderSize={orderSize} orderPrice={orderPrice} />
+      <HeroSection/>
       <CoffeList getCountForOrder={getCountForOrderHandler} />
-
     </div>
   );
 }

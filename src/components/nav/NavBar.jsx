@@ -6,7 +6,7 @@ const NavBar = (props) => {
             <h1 className="font-bold text-lg">
                 Coffe Shop
             </h1>
-            <Busket orderSize={props.orderSize}/>
+            <Busket orderSize={props.orderSize} orderPrice={props.orderPrice}/>
         </nav>
     );
 }
