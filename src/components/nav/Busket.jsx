@@ -3,7 +3,7 @@ import busket from '../assets/busket.png'
 const Busket = (props) => {
 
     return (
-        <div className="bg-[#ea580c] font-bold  px-4 py-2 rounded-2xl flex gap-x-4 items-center">
+        <button onClick={props.onToggleModal} className="bg-[#ea580c] font-bold  px-4 py-2 rounded-2xl flex gap-x-4 items-center">
             <p className='hidden sm:inline'>
                 Your order : 
             </p>
@@ -14,7 +14,7 @@ const Busket = (props) => {
             <span >
                 {props.orderPrice} $
             </span>
-        </div>
+        </button>
     );
 }
 

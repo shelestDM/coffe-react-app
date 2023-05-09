@@ -1,13 +1,16 @@
-import { useState , useEffect} from "react";
+import { useState, useEffect, useContext } from "react";
 import CoffeList from "./components/coffe-list/CoffeList";
 import HeroSection from "./components/hero-section/HeroSection";
 import NavBar from "./components/nav/NavBar";
+import { CoffeContext } from "./context/coffeeContext";
 
 function App() {
 
+  const coffeeMenu = useContext(CoffeContext);
+
   const [order, setOrder] = useState([]);
   let [orderSize, setOrderSize] = useState(0);
-  let [orderPrice, setOrderPrice ] = useState(0);
+  let [orderPrice, setOrderPrice] = useState(0);
 
   useEffect(() => {
     calculateOrderSize();
@@ -18,8 +21,10 @@ function App() {
   }, [orderSize]);
 
   const getCountForOrderHandler = (newOrder) => {
+    console.log(newOrder);
+    mutateExistingCoffeeObj(newOrder)
     setOrder((prevOrder) => {
-      return [newOrder, ...(prevOrder.filter(coffe=> coffe.id !== newOrder.id))];
+      return [newOrder, ...prevOrder];
     });
   };
 
@@ -29,7 +34,7 @@ function App() {
       calculatedSize += coffeItem.count;
     }
     setOrderSize(calculatedSize);
-    console.log(order);
+    // console.log(order);
   };
 
   const calculateOrderPrice = () => {
@@ -40,15 +45,29 @@ function App() {
     setOrderPrice(calculatedPrice);
   }
 
+  const mutateExistingCoffeeObj = (newOrder) => {
+    order.map((orderItem)=>{
+      if(orderItem.id === newOrder.id){
+        setOrder((prevOrder) => {
+
+          return [newOrder, ...prevOrder];
+        });
+        console.log('yes!');
+      }else{
+        console.log('no!');
+      }
+    })
+  }
 
 
   return (
-
-    <div >
-      <NavBar orderSize={orderSize} orderPrice={orderPrice} />
-      <HeroSection/>
-      <CoffeList getCountForOrder={getCountForOrderHandler} />
-    </div>
+    <CoffeContext.Provider value={coffeeMenu}>
+      <div >
+        <NavBar orderSize={orderSize} orderPrice={orderPrice} />
+        <HeroSection />
+        <CoffeList getCountForOrder={getCountForOrderHandler} />
+      </div>
+    </CoffeContext.Provider>
   );
 }
 
