@@ -11,6 +11,7 @@ const CoffeItem = (props) => {
 
     const createOrder = () => {
         const orderItem = {
+            title: props.coffe.title,
             id: props.coffe.id,
             count: count,
             price: props.coffe.price
@@ -39,7 +40,7 @@ const CoffeItem = (props) => {
                     <label htmlFor="count">Count</label>
                     <input value={count} onChange={changeCoffeCount} className="w-20 border xs:w-12 rounded-lg text-black pl-4" name="count" type="number" />
                 </div>
-                <Button add={addCoffeToOrder} />
+                <Button title={'Add'} add={addCoffeToOrder} />
             </div>
         </div>
      );

@@ -14,19 +14,12 @@ function App() {
 
   useEffect(() => {
     calculateOrderSize();
+    console.log(order);
   }, [order]);
 
   useEffect(() => {
     calculateOrderPrice();
   }, [orderSize]);
-
-  const getCountForOrderHandler = (newOrder) => {
-    console.log(newOrder);
-    mutateExistingCoffeeObj(newOrder)
-    setOrder((prevOrder) => {
-      return [newOrder, ...prevOrder];
-    });
-  };
 
   const calculateOrderSize = () => {
     let calculatedSize = 0;
@@ -34,7 +27,6 @@ function App() {
       calculatedSize += coffeItem.count;
     }
     setOrderSize(calculatedSize);
-    // console.log(order);
   };
 
   const calculateOrderPrice = () => {
@@ -45,25 +37,25 @@ function App() {
     setOrderPrice(calculatedPrice);
   }
 
-  const mutateExistingCoffeeObj = (newOrder) => {
-    order.map((orderItem)=>{
-      if(orderItem.id === newOrder.id){
-        setOrder((prevOrder) => {
+  const getCountForOrderHandler = (newOrder) => {
+    setOrder((prevOrder) => {
+      changeCoffeeCountByIdIfAddExistingCoffeeObj(prevOrder, newOrder);
+      return [newOrder,...prevOrder.filter(item=>item.id!==newOrder.id)];
+    });
+  };
 
-          return [newOrder, ...prevOrder];
-        });
-        console.log('yes!');
-      }else{
-        console.log('no!');
-      }
-    })
+  const changeCoffeeCountByIdIfAddExistingCoffeeObj = (prevOrder, newOrder) => {
+    prevOrder.forEach((item)=>{
+      if(item.id===newOrder.id){
+      newOrder.count+=item.count;
+    }}) 
   }
 
 
   return (
     <CoffeContext.Provider value={coffeeMenu}>
       <div >
-        <NavBar orderSize={orderSize} orderPrice={orderPrice} />
+        <NavBar order={order} orderSize={orderSize} orderPrice={orderPrice} />
         <HeroSection />
         <CoffeList getCountForOrder={getCountForOrderHandler} />
       </div>

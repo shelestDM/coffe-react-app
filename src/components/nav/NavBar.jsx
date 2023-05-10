@@ -17,7 +17,7 @@ const NavBar = (props) => {
             </h1>
             <Busket onToggleModal={toggleModalHandler} orderSize={props.orderSize} orderPrice={props.orderPrice}/>
             {
-                toggleModal ?  <ModalWindow onToggleModal={toggleModalHandler}/> : ''
+                toggleModal  ?  <ModalWindow order={props.order} onToggleModal={toggleModalHandler}/> : ''
             }
         </nav>
     );
