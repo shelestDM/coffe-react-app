@@ -1,12 +1,10 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, Fragment } from "react";
 import CoffeList from "./components/coffe-list/CoffeList";
 import HeroSection from "./components/hero-section/HeroSection";
 import NavBar from "./components/nav/NavBar";
-import { CoffeContext } from "./context/coffeeContext";
+
 
 function App() {
-
-  const coffeeMenu = useContext(CoffeContext);
 
   const [order, setOrder] = useState([]);
   let [orderSize, setOrderSize] = useState(0);
@@ -14,12 +12,12 @@ function App() {
 
   useEffect(() => {
     calculateOrderSize();
-    console.log(order);
   }, [order]);
 
   useEffect(() => {
     calculateOrderPrice();
   }, [orderSize]);
+
 
   const calculateOrderSize = () => {
     let calculatedSize = 0;
@@ -40,26 +38,25 @@ function App() {
   const getCountForOrderHandler = (newOrder) => {
     setOrder((prevOrder) => {
       changeCoffeeCountByIdIfAddExistingCoffeeObj(prevOrder, newOrder);
-      return [newOrder,...prevOrder.filter(item=>item.id!==newOrder.id)];
+      return [newOrder, ...prevOrder.filter(item => item.id !== newOrder.id)];
     });
   };
 
   const changeCoffeeCountByIdIfAddExistingCoffeeObj = (prevOrder, newOrder) => {
-    prevOrder.forEach((item)=>{
-      if(item.id===newOrder.id){
-      newOrder.count+=item.count;
-    }}) 
+    prevOrder.forEach((item) => {
+      if (item.id === newOrder.id) {
+        newOrder.count += item.count;
+      }
+    })
   }
 
 
   return (
-    <CoffeContext.Provider value={coffeeMenu}>
-      <div >
+      <Fragment >
         <NavBar order={order} orderSize={orderSize} orderPrice={orderPrice} />
         <HeroSection />
         <CoffeList getCountForOrder={getCountForOrderHandler} />
-      </div>
-    </CoffeContext.Provider>
+      </Fragment>
   );
 }
 
