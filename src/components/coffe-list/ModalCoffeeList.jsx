@@ -14,6 +14,9 @@ const ModalCoffeeList = (props) => {
                 )
                }
             </div>
+            <div className="rounded-xl bg-white mx-auto max-w-[40%] lg:max-w-[200px] py-4 text-black">
+               Total price: 20$
+            </div>
             <Button title={'Place an order'} />
         </div>
     );
