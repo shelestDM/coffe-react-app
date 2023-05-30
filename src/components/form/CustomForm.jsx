@@ -23,7 +23,7 @@ const CustomForm = () => {
     const sendForm = (e) => {
         e.preventDefault();
         const order = {
-            name: name, 
+            name: name,  
             phone: phone,
             city: city,
             street: street,
