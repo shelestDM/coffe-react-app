@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Button from "../UI/Button";
 
-const CustomForm = () => {
+const CustomForm = (props) => {
 
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
@@ -22,15 +22,16 @@ const CustomForm = () => {
     };
     const sendForm = (e) => {
         e.preventDefault();
-        const order = {
+
+        const finalOrder = {
             name: name,  
             phone: phone,
             city: city,
             street: street,
+            order: createOrderObj()
         };
-        sendRequest(order);
-        // clearInputs();
-        console.log('order: ', order);
+        sendRequest(finalOrder);
+        console.log('order: ', finalOrder);
     };
 
     const sendRequest = async (order) => {
@@ -39,7 +40,22 @@ const CustomForm = () => {
             headers: {'Content-type': 'application/json'},
             body: JSON.stringify(order)
         });
-        console.log(response.json());
+        if(response.status === 200){
+            clearInputs();
+            props.closeModal();
+            
+        }
+    };
+    
+    const createOrderObj = () => {
+        const order = [];
+        for (const item of props.order) {
+            order.push({
+                title: item.title,
+                count: item.count
+            });
+        };
+        return order;
     };
 
     const clearInputs = () => {
@@ -50,7 +66,7 @@ const CustomForm = () => {
     };
 
     return ( 
-        <form onSubmit={sendForm} className="flex flex-col gap-5 py-5 border w-3/4 mx-auto">
+        <form onSubmit={sendForm} className="flex flex-col gap-5 py-5 w-3/4 mx-auto">
             <div className="flex flex-col items-start gap-3">
                 <label htmlFor="name">Enter your name</label>
                 <input value={name} onChange={changeName} className="py-2 px-3 rounded-xl text-black" type="text" id="name" />
@@ -68,7 +84,7 @@ const CustomForm = () => {
                 <input value={street} onChange={changeStreet} className="py-2 px-3 rounded-xl text-black" type="text" id="street" />
             </div>
             <div>
-                <Button title={'Order'} type={'submit'}/>
+                <Button id={'send__order'} title={'Order'} type={'submit'}/>
             </div>
         </form>
      );
